@@ -1,7 +1,7 @@
 """Install what GPM needs on Colab. Run before importing torch in the notebook.
 
 Tries the torch Colab already has. If PyG wheels do not exist for it, falls
-back to GPM's original torch 2.4.0 build. dgl is left out on purpose: GPM
+back to known torch builds that have PyG wheels. dgl is left out on purpose: GPM
 imports it but never calls it, and measure_timing.py handles its absence.
 """
 import subprocess
@@ -47,13 +47,25 @@ def use_current_torch():
     return pip('--only-binary=:all:', *PYG, '-f', wheel_url(version)) and pip('torch_geometric')
 
 
-def use_original_torch():
-    return (pip('torch==2.4.0', '--index-url', 'https://download.pytorch.org/whl/cu121')
-            and pip('--only-binary=:all:', *PYG, '-f', wheel_url('2.4.0+cu121'))
-            and pip('torch-geometric==2.6.1'))
+# Known builds, tried in order if Colab's own torch has no PyG wheels.
+# 2.11.0+cu130 is the build that ran this project's first Colab timing.
+FALLBACKS = (('2.11.0', 'cu130'), ('2.8.0', 'cu128'), ('2.5.1', 'cu121'))
 
 
-def main(attempts=(use_current_torch, use_original_torch)):
+def install_torch(version, cuda):
+    return (pip(f'torch=={version}', '--index-url', f'https://download.pytorch.org/whl/{cuda}')
+            and pip('--only-binary=:all:', *PYG, '-f', wheel_url(f'{version}+{cuda}'))
+            and pip('torch_geometric'))
+
+
+def fallback(version, cuda):
+    def attempt():
+        print(f'Trying torch {version}+{cuda}', flush=True)
+        return install_torch(version, cuda)
+    return attempt
+
+
+def main(attempts=(use_current_torch, *(fallback(v, c) for v, c in FALLBACKS))):
     if not pip(*COMMON):
         sys.exit('Could not install the common packages. Paste the output above to Claude.')
     for attempt in attempts:

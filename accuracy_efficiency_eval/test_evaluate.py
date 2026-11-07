@@ -9,6 +9,7 @@ import evaluate as ev
 import measure_timing as mt
 import aggregate_runs as ar
 import extra_analyses as ex
+import matched_timing as tm
 
 
 def make(probabilities=None, reps=8, nodes=40):
@@ -166,7 +167,7 @@ class Inputs(unittest.TestCase):
             path = Path(tmp) / 'd.npz'
             np.savez(path, node_ids=ids, final_k=np.array([[16, 32, 128]]), predicted=np.array([[0, 1, 0]]),
                      seconds_total=np.array(3.0))
-            out = ev.load_adaptive_decisions(path, y, ids, costs)
+            out = ev.load_adaptive_decisions(path, y, ids, costs)[0]
         self.assertAlmostEqual(out['accuracy'], 2 / 3)
         self.assertAlmostEqual(out['rerun_cost'], (16 + 48 + 240) / 3)
         self.assertAlmostEqual(out['seconds_per_node'], 1)
@@ -178,7 +179,24 @@ class Inputs(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / 'd.npz'
             np.savez(path, node_ids=np.array([6, 5]), final_k=np.array([[16, 16]]), predicted=np.array([[1, 0]]))
-            self.assertEqual(ev.load_adaptive_decisions(path, y, ids, costs)['accuracy'], 1)
+            self.assertEqual(ev.load_adaptive_decisions(path, y, ids, costs)[0]['accuracy'], 1)
+
+    def test_recorded_passes_override_four_stage_assumption(self):
+        y = np.array([0, 1])
+        ids = np.array([5, 6])
+        costs, _ = ev.load_costs([16, 32, 64, 128])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / 'd.npz'
+            np.savez(path, node_ids=ids, final_k=np.array([[16, 128]]), predicted=np.array([[0, 1]]),
+                     pattern_passes=np.array([[16, 144]]), encoding_reuse=np.array(False))
+            out = ev.load_adaptive_decisions(path, y, ids, costs)[0]
+        self.assertEqual(out['rerun_cost'], 80)
+        self.assertIsNone(out['reuse_cost'])
+
+    def test_live_comparison_baselines(self):
+        d = make(reps=8, nodes=40)
+        out = ev.compare_live(np.ones(40), np.arange(40), d, 44., 20, 0)
+        self.assertEqual(set(out), {'fixed_128', 'fixed_32_64_interpolated', 'random_same_cost'})
 
 
 class Timing(unittest.TestCase):
@@ -316,6 +334,34 @@ class Incremental(unittest.TestCase):
 
     def test_cost_never_exceeds_128(self):
         self.assertEqual(ex.COST.max(), 128)
+
+
+class Matched(unittest.TestCase):
+    def _run(self, method, r, seconds):
+        return dict(method=method, round=r, seconds=seconds, accuracy=.9, pattern_passes=50., peak_mb=10.)
+
+    def test_speedup_is_paired_within_round(self):
+        runs = [self._run('fixed_128', 0, 10.), self._run('fixed_128', 1, 20.), self._run('fresh_two_stage', 0, 5.),
+                self._run('fresh_two_stage', 1, 10.)]
+        row = [r for r in tm.summarise(runs, 100, 2) if r['method'] == 'fresh_two_stage'][0]
+        self.assertEqual(row['speedup_vs_fixed_128'], 2)
+        self.assertEqual((row['speedup_min'], row['speedup_max']), (2, 2))
+        self.assertAlmostEqual(row['ms_per_node'], 37.5)
+
+    def test_missing_baseline_is_refused(self):
+        with self.assertRaises(ValueError):
+            tm.summarise([self._run('fresh_two_stage', 0, 5.)], 100, 2)
+
+    def test_missing_round_is_refused(self):
+        with self.assertRaises(ValueError):
+            tm.summarise([self._run('fixed_128', 0, 1.), self._run('fixed_128', 1, 1.), self._run('fixed_16', 0, 1.)], 10, 1)
+
+    def test_every_round_runs_every_method(self):
+        methods = tm.method_table(dict(nested_four=.8, fresh_four=.8, fresh_two=.9))
+        self.assertEqual(len(methods), 9)
+        for r in range(3):
+            self.assertEqual({m['name'] for m in tm.round_order(methods, r, 1)}, {m['name'] for m in methods})
+        self.assertNotEqual([m['name'] for m in tm.round_order(methods, 0, 1)], [m['name'] for m in tm.round_order(methods, 1, 1)])
 
 
 class EndToEnd(unittest.TestCase):

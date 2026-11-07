@@ -1,6 +1,6 @@
 # Accuracy-efficiency evaluation
 
-Compares fixed K, random allocation, repeated sampling, and adaptive inference at matched costs. This folder is separate from GPM and changes none of its code. See `results/REPORT.md` for current findings.
+Compares fixed K, random allocation, repeated sampling, and adaptive inference at matched costs. This folder is separate from GPM and changes none of its code. See `final/REPORT.md` for current findings. `results/` holds the earlier pilot.
 
 ## Run the pilot
 
@@ -20,11 +20,18 @@ python plot_results.py --results results
 python extra_analyses.py --predictions ../sampling_benefit_diagnostic/results/predictions.npz --output results
 ```
 
-## Add real timing on Colab
+## Measure matched time on Colab
 
-Follow the steps at the top of `colab_timing.ipynb`. It installs GPM's packages with `colab_setup.py`, checks that the test nodes and accuracy match the saved predictions, runs `measure_timing.py`, and saves everything to Google Drive.
+Follow the steps at the top of `colab_timing.ipynb`. It runs fixed, repeated, and adaptive inference on one GPU in shuffled rounds through `matched_timing.py`, then reports speedups measured within each round.
 
-The resulting adaptive time is an estimate: measured time per K combined with replayed stopping decisions. Arvind's live run supplies the true adaptive time.
+## Reproduce the final evaluation
+
+```sh
+python evaluate.py --predictions HANDOFF/nested/final_predictions.npz --output final/nested --adaptive-decisions nested_four_stage=HANDOFF/nested/adaptive_decisions.npz
+python evaluate.py --predictions HANDOFF/fresh/final_predictions.npz --output final/fresh --adaptive-decisions fresh_four_stage=HANDOFF/fresh/adaptive_decisions.npz --adaptive-decisions fresh_two_stage=HANDOFF/fresh/adaptive_decisions_two_stage.npz
+python plot_results.py --results final/nested
+python plot_results.py --results final/fresh
+```
 
 ## Combine final runs
 
@@ -59,6 +66,7 @@ With `node_split` present, `evaluate.py` switches to final mode. It tunes on `va
 | `final_k` | [repetition, node] | Budget where each node stopped: 16, 32, 64, or 128 |
 | `predicted` | [repetition, node] | Final predicted class |
 | `seconds_total` | scalar, optional | Wall-clock time for the whole run |
+| `pattern_passes` | [repetition, node], optional | Work each node really used. This overrides costs inferred from `final_k` |
 
 ## Cost
 

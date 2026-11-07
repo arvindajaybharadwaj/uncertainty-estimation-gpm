@@ -195,7 +195,10 @@ def load_adaptive_decisions(path, labels, node_ids, costs):
     """Read per-node results from the live adaptive script.
 
     Required fields: node_ids [n], final_k [repetition, n], predicted [repetition, n].
-    Optional: seconds_total, the measured wall-clock time of the whole run.
+    Optional: pattern_passes [repetition, n], the work each node really used,
+    and seconds_total, the measured time of the whole run. Recorded
+    pattern_passes always override costs inferred from final_k, because
+    different rules reach the same final K at different costs.
     """
     with np.load(path, allow_pickle=False) as z:
         missing = {'node_ids', 'final_k', 'predicted'} - set(z.files)
@@ -203,21 +206,47 @@ def load_adaptive_decisions(path, labels, node_ids, costs):
             raise ValueError(f'{path} is missing fields: {sorted(missing)}')
         ids, final_k, predicted = z['node_ids'], z['final_k'], z['predicted']
         seconds = float(z['seconds_total']) if 'seconds_total' in z.files else None
+        passes = z['pattern_passes'] if 'pattern_passes' in z.files else None
+        sampled = z['sampled_patterns'] if 'sampled_patterns' in z.files else None
+        reused = bool(z['encoding_reuse']) if 'encoding_reuse' in z.files else None
+        threshold = float(z['threshold']) if 'threshold' in z.files else None
     lookup = {int(n): i for i, n in enumerate(node_ids)}
     unknown = [int(n) for n in ids if int(n) not in lookup]
     if unknown:
         raise ValueError(f'{len(unknown)} decision nodes are not in the predictions.')
-    y = labels[[lookup[int(n)] for n in ids]]
+    positions = np.array([lookup[int(n)] for n in ids])
+    y = labels[positions]
     if final_k.shape != predicted.shape or final_k.ndim != 2 or final_k.shape[1] != len(ids):
         raise ValueError('final_k and predicted must both be [repetition, node].')
     bad = set(np.unique(final_k).tolist()) - set(ADAPTIVE_STEPS)
     if bad:
         raise ValueError(f'Unexpected final K values: {sorted(bad)}')
+    if passes is not None and passes.shape != final_k.shape:
+        raise ValueError('pattern_passes must match final_k.')
     rerun, reuse = stop_costs(costs)
     step = np.searchsorted(ADAPTIVE_STEPS, final_k)
-    return dict(accuracy=float((predicted == y).mean()), mean_final_k=float(final_k.mean()),
-                rerun_cost=float(rerun[step].mean()), reuse_cost=float(reuse[step].mean()),
-                seconds_total=seconds, seconds_per_node=None if seconds is None else seconds / (final_k.size))
+    per_node = (predicted == y).mean(0)
+    out = dict(accuracy=float((predicted == y).mean()), mean_final_k=float(final_k.mean()),
+               rerun_cost=float(passes.mean()) if passes is not None else float(rerun[step].mean()),
+               reuse_cost=None if passes is not None and not reused else float(reuse[step].mean()),
+               sampled_patterns=None if sampled is None else float(sampled.mean()),
+               threshold=threshold, seconds_total=seconds,
+               seconds_per_node=None if seconds is None else seconds / final_k.size,
+               stop_share={str(k): float((final_k == k).mean()) for k in ADAPTIVE_STEPS if (final_k == k).any()})
+    return out, per_node, positions
+
+
+def compare_live(per_node, positions, data, cost, draws, seed):
+    """Paired-by-node comparisons. Walks differ between runs, so these are not same-walk pairs."""
+    fixed_e = {k: fixed(data, k, positions) for k in ADAPTIVE_STEPS}
+    low = max(k for k in ADAPTIVE_STEPS if k <= cost)
+    high = min(k for k in ADAPTIVE_STEPS if k >= cost)
+    w = 0 if high == low else (cost - low) / (high - low)
+    interpolated = (1 - w) * fixed_e[low] + w * fixed_e[high]
+    random_e = random_allocation(fixed_e[16], fixed_e[128], 16, 128, cost)[0]
+    rows = {'fixed_128': fixed_e[128], f'fixed_{low}_{high}_interpolated': interpolated, 'random_same_cost': random_e}
+    return {name: dict(zip(('diff', 'ci_low', 'ci_high'), bootstrap_diff(per_node, base, draws, seed)))
+            for name, base in rows.items()}
 
 
 # ---------------------------------------------------------------- full evaluation
@@ -305,7 +334,8 @@ def main():
     a.add_argument('--predictions', required=True)
     a.add_argument('--output', default='results')
     a.add_argument('--timing', help='timing.json from measure_timing.py')
-    a.add_argument('--adaptive-decisions', help='per-node results from the live adaptive script')
+    a.add_argument('--adaptive-decisions', action='append', default=[], metavar='[NAME=]PATH',
+                   help='per-node results from the live adaptive script; repeat for each rule')
     a.add_argument('--score', default='confidence', choices=SCORES)
     a.add_argument('--bootstrap', type=int, default=2000)
     a.add_argument('--seed', type=int, default=20261105)
@@ -326,8 +356,11 @@ def main():
         summary['split_sensitivity'] = dict(
             gap_mean=float(sensitivity.gap.mean()), gap_min=float(sensitivity.gap.min()),
             gap_max=float(sensitivity.gap.max()), rerun_cost_mean=float(sensitivity.rerun_cost.mean()))
-    if args.adaptive_decisions:
-        summary['live_adaptive'] = load_adaptive_decisions(args.adaptive_decisions, data['y'], data['node_ids'], costs)
+    for item in args.adaptive_decisions:
+        name, path = item.split('=', 1) if '=' in item else (Path(item).stem, item)
+        live, per_node, positions = load_adaptive_decisions(path, data['y'], data['node_ids'], costs)
+        live['comparisons'] = compare_live(per_node, positions, data, live['rerun_cost'], args.bootstrap, args.seed + 9)
+        summary.setdefault('live_adaptive', {})[name] = live
     with open(out / 'summary.json', 'w') as f:
         json.dump(summary, f, indent=2)
     print(json.dumps(summary, indent=2))

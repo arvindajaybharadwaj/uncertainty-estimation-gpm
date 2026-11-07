@@ -1,5 +1,7 @@
 # Accuracy-efficiency pilot: Amazon Computers
 
+*Superseded by `../final/REPORT.md`, which uses live runs and validation-tuned thresholds. Pilot accuracies come from an earlier run and are not directly comparable.*
+
 **Adaptive replay matched fixed K = 128 accuracy at about a third of its nominal work, and beat fixed, random, and repeated sampling at similar nominal cost. This is a pilot: it does not yet prove a speedup, because no real adaptive run or adaptive timing exists.**
 
 ## Setup

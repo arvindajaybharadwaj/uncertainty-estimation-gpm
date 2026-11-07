@@ -39,7 +39,7 @@ def main():
     ax.text(fixed.cost.max(), baseline - .5 - .05, '0.5-point target below fixed K=128', color=MUTED,
             ha='right', va='top', fontsize=10)
     series = [(fixed, ORANGE, 'Fixed K', 'o', 3), (randoms, AQUA, 'Random allocation', 's', 2),
-              (repeated, YELLOW, 'Repeated sampling (K=16)', 'D', 2), (adaptive, BLUE, 'Adaptive replay', 'o', 4)]
+              (repeated, YELLOW, 'Repeated sampling (K=16)', 'D', 2), (adaptive, BLUE, 'Adaptive replay on saved runs', 'o', 4)]
     for rows, colour, label, marker, z in series:
         ax.plot(rows.cost, rows.accuracy * 100, color=colour, lw=2, marker=marker, ms=8, label=label, zorder=z,
                 markeredgecolor=SURFACE, markeredgewidth=1.5)
@@ -50,9 +50,14 @@ def main():
         ax.text(x, y + offset, text, color=INK, ha='center', **kw)
 
     label(adaptive.iloc[1:], 'Adaptive', .46, .035, fontweight='bold')
-    label(fixed, 'Fixed K', .72, .04)
-    label(repeated, 'Repeated', .72, -.09)
+    label(fixed, 'Fixed K', .33, .09)
+    label(repeated, 'Repeated', .5, -.1)
     label(randoms, 'Random', .52, -.11)
+    live = summary.get('live_adaptive', {})
+    if live and not seconds:
+        for i, row in enumerate(live.values()):
+            ax.scatter(row['rerun_cost'], row['accuracy'] * 100, s=90, marker='*', color=INK, zorder=6,
+                       label='Live adaptive runs' if i == 0 else None)
     ax.set_xlabel('Estimated milliseconds per node, from measured GPM time' if seconds else 'Patterns sent through GPM per node, counting every pass',
                   color=MUTED)
     ax.set_ylabel('Accuracy (%)', color=MUTED)
