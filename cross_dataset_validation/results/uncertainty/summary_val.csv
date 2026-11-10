@@ -1,0 +1,4 @@
+dataset,method,spearman_mean,auroc_mean,top20_benefit_pp_mean,all_benefit_pp_mean,spearman_sd,auroc_sd,top20_benefit_pp_sd,all_benefit_pp_sd,checkpoints
+wikics,Maximum confidence,0.2239347944729998,0.8196642685851319,6.586402266288951,1.957320520067835,,,,,1
+wikics,Predictive entropy,0.22269081605213933,0.8168928493568781,6.232294617563739,1.957320520067835,,,,,1
+wikics,Sampling disagreement,0.23260696499140046,0.8376934815783738,5.842776203966006,1.957320520067835,,,,,1

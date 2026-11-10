@@ -1,0 +1,17 @@
+# Downloaded datasets, cached random walks and trained checkpoints
+GPM/data/*
+!GPM/data/README.md
+GPM/patterns/*
+!GPM/patterns/README.md
+GPM/model/
+
+# Arvind's original 50-run Computers cache (shared directly, not through git)
+computers_sampling_full.npz
+
+# Large prediction and decision files from cross-dataset runs, smoke tests,
+# and the handoff package (shared directly, not through git)
+cross_dataset_validation/runs/**/*.npz
+cross_dataset_validation/runs_smoke/
+cross_dataset_validation/handoff/
+
+__pycache__/

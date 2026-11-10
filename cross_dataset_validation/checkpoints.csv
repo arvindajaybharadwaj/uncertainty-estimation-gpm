@@ -1,0 +1,7 @@
+dataset,checkpoint_id,seed,split_index,path,sha256,best_epoch,val_acc,test_acc,source,torch,gpu,git_commit,notes
+wikics,1,0,0,GPM/model/wikics/seed0/best.pt,eb48b7aa6cb0a137633ab1bf0e33227e413ac57a4c00e1287072c3326b33884f,210,82.8717,80.6225,train_checkpoint.py,2.7.1+cu128,NVIDIA GeForce RTX 5060 Laptop GPU,bb68b20,
+wikics,2,1,0,GPM/model/wikics/seed1/best.pt,80af7ca1f64857ceefe5fd8a80cdd5cf36b1babd6dbd8f556d622da6c62b1e47,160,82.8152,80.4515,train_checkpoint.py,2.7.1+cu128,NVIDIA GeForce RTX 5060 Laptop GPU,bb68b20,
+wikics,3,2,0,GPM/model/wikics/seed2/best.pt,1cf0c1d18d1f3d216d42a7186eb913d26ee000e71d0accc4a4025fc19ccdff66,220,83.1543,80.7252,train_checkpoint.py,2.7.1+cu128,NVIDIA GeForce RTX 5060 Laptop GPU,bb68b20,
+computers,1,0,0,GPM/model/computers/seed0/best.pt,7eb8dd2134257f3784829d516dd2d918b974e5db127fcd9561097d50240dee89,110,89.7818,90.6579,train_checkpoint.py,2.7.1+cu128,NVIDIA GeForce RTX 5060 Laptop GPU,bb68b20,
+computers,2,1,0,GPM/model/computers/seed1/best.pt,6cfd4d53a7878e3336689d10559cb32d0f78f1e7bbc2d3aa7bf7bb8483d2da5b,140,90.1455,90.9487,train_checkpoint.py,2.7.1+cu128,NVIDIA GeForce RTX 5060 Laptop GPU,bb68b20,
+computers,3,2,0,GPM/model/computers/seed2/best.pt,af89cefd14a5b4c4010340d1e22938fdb16febb20e91f8644670108c33b83809,460,90.8727,91.5304,train_checkpoint.py,2.7.1+cu128,NVIDIA GeForce RTX 5060 Laptop GPU,bb68b20,

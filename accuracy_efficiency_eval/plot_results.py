@@ -11,15 +11,29 @@ import pandas as pd
 
 BLUE, ORANGE, AQUA, YELLOW = '#2a78d6', '#eb6834', '#1baf7a', '#eda100'
 INK, MUTED, GRID, SURFACE = '#0b0b0b', '#52514e', '#e7e6e1', '#fcfcfb'
+DATASET_NAMES = {'computers': 'Amazon Computers', 'wikics': 'WikiCS', 'cora_full': 'CoraFull'}
+
+
+def dataset_name(summary, override=None):
+    """Display name from --dataset, else the predictions file's `dataset` field, else None."""
+    dataset = override
+    path = Path(summary.get('predictions', ''))
+    if dataset is None and path.is_file():
+        with np.load(path, allow_pickle=False) as z:
+            dataset = str(z['dataset']) if 'dataset' in z.files else None
+    return None if dataset is None else DATASET_NAMES.get(dataset, dataset)
 
 
 def main():
     a = argparse.ArgumentParser()
     a.add_argument('--results', default='results')
-    results = Path(a.parse_args().results)
+    a.add_argument('--dataset', help="name for the subtitle; read from the predictions file if omitted")
+    args = a.parse_args()
+    results = Path(args.results)
     curve = pd.read_csv(results / 'curve.csv')
     with open(results / 'summary.json') as f:
         summary = json.load(f)
+    name = dataset_name(summary, args.dataset)
     seconds = summary['cost_unit'] != 'pattern-passes'
     if seconds:  # plot milliseconds, which are easier to read per node
         curve['cost'] *= 1000
@@ -43,21 +57,14 @@ def main():
     for rows, colour, label, marker, z in series:
         ax.plot(rows.cost, rows.accuracy * 100, color=colour, lw=2, marker=marker, ms=8, label=label, zorder=z,
                 markeredgecolor=SURFACE, markeredgewidth=1.5)
-    def label(rows, text, share, offset, **kw):
-        """Name a line at a point part-way along the cost axis."""
-        x = fixed.cost.min() + share * (fixed.cost.max() - fixed.cost.min())
-        y = float(np.interp(x, rows.cost, rows.accuracy * 100))
-        ax.text(x, y + offset, text, color=INK, ha='center', **kw)
-
-    label(adaptive.iloc[1:], 'Adaptive', .46, .035, fontweight='bold')
-    label(fixed, 'Fixed K', .33, .09)
-    label(repeated, 'Repeated', .5, -.1)
-    label(randoms, 'Random', .52, -.11)
+    # Lines are named by the legend only. Labels at fixed offsets suited one dataset's curves
+    # and landed on the wrong line for others.
     live = summary.get('live_adaptive', {})
     if live and not seconds:
         for i, row in enumerate(live.values()):
             ax.scatter(row['rerun_cost'], row['accuracy'] * 100, s=90, marker='*', color=INK, zorder=6,
                        label='Live adaptive runs' if i == 0 else None)
+    ax.legend(frameon=False, loc='lower right', labelcolor=INK, bbox_to_anchor=(1, .03))
     ax.set_xlabel('Estimated milliseconds per node, from measured GPM time' if seconds else 'Patterns sent through GPM per node, counting every pass',
                   color=MUTED)
     ax.set_ylabel('Accuracy (%)', color=MUTED)
@@ -67,12 +74,12 @@ def main():
         ax.spines[side].set_visible(False)
     ax.spines['bottom'].set_color(GRID)
     ax.tick_params(colors=MUTED, length=0)
-    ax.legend(frameon=False, loc='lower right', labelcolor=INK, bbox_to_anchor=(1, .03))
     mode = 'Pilot on saved test nodes, not a final result' if summary['mode'] == 'PILOT' else 'Final evaluation on test nodes'
     fig.text(.075, .955, 'Accuracy against estimated inference time' if seconds else
              'Accuracy against patterns sent through GPM', fontsize=14,
              fontweight='bold', color=INK)
-    fig.text(.075, .91, f'{mode}. Amazon Computers, {summary["n_evaluation"]:,} evaluation nodes.', fontsize=10.5, color=MUTED)
+    nodes = f'{summary["n_evaluation"]:,} evaluation nodes'
+    fig.text(.075, .91, f'{mode}. {name + ", " if name else ""}{nodes}.', fontsize=10.5, color=MUTED)
     fig.subplots_adjust(left=.075, right=.97, top=.87, bottom=.11)
     fig.savefig(results / 'accuracy_vs_cost.png', dpi=200, facecolor=SURFACE)
     fig.savefig(results / 'accuracy_vs_cost.pdf', facecolor=SURFACE)
