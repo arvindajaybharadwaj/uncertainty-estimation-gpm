@@ -281,7 +281,7 @@ class Aggregate(unittest.TestCase):
         with tempfile.TemporaryDirectory() as t:
             a = self._folder(t, 'a', .90, 'FINAL')
             b = self._folder(t, 'b', .92, 'FINAL')
-            curve, success = ar.combine(ar.parse_runs([f'computers:1={a}', f'computers:2={b}']))
+            curve, success, live = ar.combine(ar.parse_runs([f'computers:1={a}', f'computers:2={b}']))
         row = curve[curve.method == 'adaptive'].iloc[0]
         self.assertEqual(row.checkpoints, 2)
         self.assertAlmostEqual(row.accuracy_mean, .91)
