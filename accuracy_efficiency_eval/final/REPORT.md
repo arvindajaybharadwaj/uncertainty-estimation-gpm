@@ -116,7 +116,7 @@ Confidence identifies nodes that benefit less well on WikiCS, and WikiCS has abo
 
 The repetition count differs between runs: 50 for Computers 1 and 10 for the others. Per-node counts therefore have different precision across checkpoints.
 
-### Not yet verified
+### Comparing across runs
 
 - **Environments:** Computers 1 ran on an L40S, and the other checkpoints on an RTX 5060 laptop GPU with torch 2.7.1. Comparisons within each checkpoint are fair, but absolute accuracies are not comparable across environments.
 
