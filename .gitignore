@@ -5,9 +5,6 @@ GPM/patterns/*
 !GPM/patterns/README.md
 GPM/model/
 
-# Arvind's original 50-run Computers cache (shared directly, not through git)
-computers_sampling_full.npz
-
 # Large prediction and decision files from cross-dataset runs, smoke tests,
 # and the handoff package (shared directly, not through git)
 cross_dataset_validation/runs/**/*.npz
