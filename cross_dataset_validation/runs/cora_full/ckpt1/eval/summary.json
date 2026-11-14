@@ -1,0 +1,63 @@
+{
+  "mode": "FINAL",
+  "score": "confidence",
+  "n_calibration": 3959,
+  "n_evaluation": 3959,
+  "nested": true,
+  "success": {
+    "threshold": 0.4967150390148163,
+    "accuracy": 0.7076787067441273,
+    "fixed_128_accuracy": 0.7122253094215711,
+    "diff": -0.004546602677443799,
+    "ci_low": -0.006315357413488255,
+    "ci_high": -0.0027525890376357697,
+    "rerun_cost": 46.85142712806264,
+    "reuse_cost": 31.42571356403132,
+    "fixed_128_cost": 128.0,
+    "stop_share": {
+      "16": 0.8062894670371306,
+      "32": 0.05023995958575398,
+      "64": 0.022606718868401113,
+      "128": 0.12086385450871433
+    }
+  },
+  "cost_unit": "pattern-passes",
+  "seed": 20261105,
+  "bootstrap": 2000,
+  "predictions": "C:\\College\\ADA\\uncertainty-estimation-gpm\\cross_dataset_validation\\runs\\cora_full\\ckpt1\\final_predictions.npz",
+  "live_adaptive": {
+    "nested_four_stage": {
+      "accuracy": 0.7076787067441273,
+      "mean_final_k": 31.029249810558223,
+      "rerun_cost": 46.05849962111645,
+      "reuse_cost": null,
+      "sampled_patterns": 31.029249810558223,
+      "threshold": 0.49338082733907196,
+      "seconds_total": 90.2928329,
+      "seconds_per_node": 0.0022806979767618085,
+      "stop_share": {
+        "16": 0.8107097751957565,
+        "32": 0.05023995958575398,
+        "64": 0.021065925738822936,
+        "128": 0.11798433947966658
+      },
+      "comparisons": {
+        "fixed_128": {
+          "diff": -0.004546602677443798,
+          "ci_low": -0.006744758777469058,
+          "ci_high": -0.002398964384945696
+        },
+        "fixed_32_64_interpolated": {
+          "diff": 0.00020926928396717667,
+          "ci_low": -0.001969221556825104,
+          "ci_high": 0.002322111490593686
+        },
+        "random_same_cost": {
+          "diff": 0.0063565576677780365,
+          "ci_low": 0.003821018277163377,
+          "ci_high": 0.008824025821193031
+        }
+      }
+    }
+  }
+}

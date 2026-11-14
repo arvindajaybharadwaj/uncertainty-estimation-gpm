@@ -1,4 +1,3 @@
-"""GPM final predictions and genuinely live adaptive inference (no encoding cache)."""
 import argparse
 import json
 import sys
@@ -87,7 +86,8 @@ def main():
     def predict(batch, pool):
         run = dict(params, pattern_set={'pattern': pool[0].contiguous(), 'eid': pool[1].contiguous()})
         logits = model(graph, torch.arange(len(batch)), run, mode='eval')[0]
-        return logits.softmax(-1).cpu().numpy()
+        # The model drops the batch dimension for a single node; keep it so stopping masks stay 1-D.
+        return logits.softmax(-1).cpu().numpy().reshape(len(batch), -1)
 
     threshold = None
     steps = KS if args.rule == 'four' else (16, 128)

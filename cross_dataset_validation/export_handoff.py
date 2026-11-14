@@ -19,6 +19,8 @@ checkpoint 1 is left out because Akhil already has Arvind's runs of it.
 Example, from the repository root:
     python cross_dataset_validation/export_handoff.py --zip
     python cross_dataset_validation/export_handoff.py wikics:1 wikics:2
+    python cross_dataset_validation/export_handoff.py cora_full:1 cora_full:2 cora_full:3 \
+        --output cross_dataset_validation/handoff/corafull_checkpoints --zip
 """
 import argparse
 import json
@@ -106,7 +108,8 @@ def main():
     a = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     a.add_argument('checkpoints', nargs='*', default=list(DEFAULT), help='dataset:checkpoint_id')
     a.add_argument('--output', default=str(HANDOFF))
-    a.add_argument('--zip', action='store_true', help='also write handoff.zip containing every folder')
+    a.add_argument('--zip', action='store_true',
+                   help='also write <output folder name>.zip, e.g. handoff.zip, containing every folder')
     args = a.parse_args()
     out = Path(args.output)
     entries = export(args.checkpoints, out)
@@ -120,7 +123,7 @@ def main():
         json.dump(manifest, f, indent=2)
     print('Wrote', out / 'MANIFEST.json')
     if args.zip:
-        archive = out / 'handoff.zip'
+        archive = out / f'{out.name}.zip'
         with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as z:
             z.write(out / 'MANIFEST.json', 'MANIFEST.json')
             for entry in entries:

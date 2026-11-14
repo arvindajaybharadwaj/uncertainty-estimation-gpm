@@ -90,7 +90,8 @@ def main():
 
     def predict(batch, pool):
         run = dict(params, pattern_set={'pattern': pool[0].contiguous(), 'eid': pool[1].contiguous()})
-        return model(graph, torch.arange(len(batch)), run, mode='eval')[0].softmax(-1)
+        # The model drops the batch dimension for a single node; keep it so stopping masks stay 1-D.
+        return model(graph, torch.arange(len(batch)), run, mode='eval')[0].softmax(-1).reshape(len(batch), -1)
 
     def fixed_batch(batch, method):
         probs = sum(predict(batch, sample(batch, method['k'])) for _ in range(method.get('m', 1)))

@@ -58,6 +58,10 @@ def main():
     a.add_argument('--seed', type=int, required=True, help='training seed; 0, 1 and 2 for the three checkpoints')
     a.add_argument('--checkpoint-id', type=int, help='ID in checkpoints.csv; defaults to seed + 1')
     a.add_argument('--epochs', type=int, help='override the epoch limit, for a quick test only')
+    a.add_argument('--eval-batch-size', type=int,
+                   help='nodes per evaluation batch; defaults to the training batch size. Evaluation uses all '
+                        '128 patterns per node, so datasets with many features (CoraFull) need a smaller one. '
+                        'It changes memory use only, not the results.')
     a.add_argument('--no-register', action='store_true', help='train without adding to checkpoints.csv')
     args = a.parse_args()
     checkpoint_id = args.seed + 1 if args.checkpoint_id is None else args.checkpoint_id
@@ -106,6 +110,7 @@ def main():
     optimizer = torch.optim.AdamW(model.parameters(), lr=params['lr'], weight_decay=params['weight_decay'],
                                   betas=(params['opt_beta1'], params['opt_beta2']), eps=params['opt_eps'])
     scheduler = get_scheduler(optimizer, params)
+    eval_params = dict(params, batch_size=args.eval_batch_size or params['batch_size'])
 
     best = dict(epoch=None, val=float('-inf'), test=None)
     best_state, history = None, []
@@ -114,7 +119,7 @@ def main():
         loss = train_node(graph, model, optimizer, split=split, scheduler=scheduler, params=params)
         if epoch % params['eval_every'] != 0:
             continue
-        result = eval_node(graph, model, split=split, params=params)
+        result = eval_node(graph, model, split=split, params=eval_params)
         history.append(dict(epoch=epoch, loss=loss['train'], val=result['val'], test=result['test']))
         print(f"Epoch {epoch}: loss {loss['train']:.4f}, val {result['val']:.2f}, test {result['test']:.2f}", flush=True)
         if result['val'] > best['val']:  # the same comparison EarlyStopping makes
@@ -131,7 +136,7 @@ def main():
     torch.save(best_state, out_file)
     env = environment()
     log = dict(dataset=args.dataset, seed=args.seed, split_index=0, best=best, epochs_run=history[-1]['epoch'],
-               training_seconds=seconds, history=history, checkpoint=relative(out_file), sha256=sha256(out_file),
+               training_seconds=seconds, eval_batch_size=eval_params['batch_size'], history=history, checkpoint=relative(out_file), sha256=sha256(out_file),
                **env, params={k: v for k, v in params.items()
                               if k not in ('pattern_set', 'device') and not hasattr(v, 'shape')})
     with open(out_dir / 'train_log.json', 'w') as f:
