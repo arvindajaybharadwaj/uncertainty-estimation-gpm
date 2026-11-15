@@ -1,0 +1,354 @@
+{
+  "device": "Tesla T4",
+  "torch": "2.11.0+cu130",
+  "rounds": 3,
+  "repeats": 50,
+  "batch_size": 256,
+  "nodes": 2751,
+  "summary": [
+    {
+      "method": "fresh_two_stage",
+      "rounds": 3,
+      "median_seconds": 76.7506,
+      "min_seconds": 68.2632,
+      "max_seconds": 76.8744,
+      "ms_per_node": 0.5579832788077064,
+      "speedup_vs_fixed_128": 2.4381320797492134,
+      "speedup_min": 2.4319487371608757,
+      "speedup_max": 2.7459128783883555,
+      "accuracy": 0.9072,
+      "pattern_passes": 52.30623333333333,
+      "peak_gpu_mb": 1252.2769
+    },
+    {
+      "method": "fresh_four_stage",
+      "rounds": 3,
+      "median_seconds": 81.2741,
+      "min_seconds": 79.6582,
+      "max_seconds": 81.4563,
+      "ms_per_node": 0.590869501999273,
+      "speedup_vs_fixed_128": 2.3002973887130094,
+      "speedup_min": 2.297282100954745,
+      "speedup_max": 2.3531136781900672,
+      "accuracy": 0.9070333333333334,
+      "pattern_passes": 53.9418,
+      "peak_gpu_mb": 811.8984
+    },
+    {
+      "method": "fixed_128",
+      "rounds": 3,
+      "median_seconds": 187.1281,
+      "min_seconds": 186.9546,
+      "max_seconds": 187.4448,
+      "ms_per_node": 1.3604369320247183,
+      "speedup_vs_fixed_128": 1.0,
+      "speedup_min": 1.0,
+      "speedup_max": 1.0,
+      "accuracy": 0.9073333333333333,
+      "pattern_passes": 128.0,
+      "peak_gpu_mb": 3025.7192
+    },
+    {
+      "method": "fixed_32",
+      "rounds": 3,
+      "median_seconds": 45.8261,
+      "min_seconds": 45.6539,
+      "max_seconds": 45.9305,
+      "ms_per_node": 0.33315957833515086,
+      "speedup_vs_fixed_128": 4.0796532980113955,
+      "speedup_min": 4.07415769477798,
+      "speedup_max": 4.10577847675664,
+      "accuracy": 0.9024,
+      "pattern_passes": 32.0,
+      "peak_gpu_mb": 857.0654
+    },
+    {
+      "method": "repeated_8x16",
+      "rounds": 3,
+      "median_seconds": 191.2227,
+      "min_seconds": 191.075,
+      "max_seconds": 191.3047,
+      "ms_per_node": 1.390205016357688,
+      "speedup_vs_fixed_128": 0.9781678129183443,
+      "speedup_min": 0.9776799511773445,
+      "speedup_max": 0.9810011775480832,
+      "accuracy": 0.9073333333333333,
+      "pattern_passes": 128.0,
+      "peak_gpu_mb": 496.3774
+    },
+    {
+      "method": "repeated_4x16",
+      "rounds": 3,
+      "median_seconds": 95.4259,
+      "min_seconds": 95.3585,
+      "max_seconds": 95.4901,
+      "ms_per_node": 0.6937542711741185,
+      "speedup_vs_fixed_128": 1.9623641311471969,
+      "speedup_min": 1.9578427501908575,
+      "speedup_max": 1.9642969047187397,
+      "accuracy": 0.9054666666666666,
+      "pattern_passes": 64.0,
+      "peak_gpu_mb": 496.3774
+    },
+    {
+      "method": "fixed_16",
+      "rounds": 3,
+      "median_seconds": 23.9599,
+      "min_seconds": 23.8771,
+      "max_seconds": 24.0072,
+      "ms_per_node": 0.1741904761904762,
+      "speedup_vs_fixed_128": 7.810053464329984,
+      "speedup_min": 7.787438768369489,
+      "speedup_max": 7.850400593036842,
+      "accuracy": 0.8949333333333334,
+      "pattern_passes": 16.0,
+      "peak_gpu_mb": 496.3677
+    },
+    {
+      "method": "fixed_64",
+      "rounds": 3,
+      "median_seconds": 92.3519,
+      "min_seconds": 91.9896,
+      "max_seconds": 92.3846,
+      "ms_per_node": 0.6714060341693929,
+      "speedup_vs_fixed_128": 2.029679952442776,
+      "speedup_min": 2.0255334763586137,
+      "speedup_max": 2.032344960734692,
+      "accuracy": 0.9057999999999999,
+      "pattern_passes": 64.0,
+      "peak_gpu_mb": 1579.7373
+    },
+    {
+      "method": "nested_four_stage",
+      "rounds": 3,
+      "median_seconds": 80.7385,
+      "min_seconds": 80.5853,
+      "max_seconds": 81.0989,
+      "ms_per_node": 0.5869756452199201,
+      "speedup_vs_fixed_128": 2.3155570143116355,
+      "speedup_min": 2.3113112508307756,
+      "speedup_max": 2.3221120973676337,
+      "accuracy": 0.9067666666666667,
+      "pattern_passes": 53.3762,
+      "peak_gpu_mb": 811.8984
+    }
+  ],
+  "runs": [
+    {
+      "method": "fresh_two_stage",
+      "round": 0,
+      "seconds": 68.2632,
+      "accuracy": 0.9072,
+      "pattern_passes": 52.4961,
+      "peak_mb": 1252.2769
+    },
+    {
+      "method": "fresh_four_stage",
+      "round": 0,
+      "seconds": 79.6582,
+      "accuracy": 0.9066,
+      "pattern_passes": 53.8303,
+      "peak_mb": 800.6069
+    },
+    {
+      "method": "fixed_128",
+      "round": 0,
+      "seconds": 187.4448,
+      "accuracy": 0.9073,
+      "pattern_passes": 128.0,
+      "peak_mb": 3025.7192
+    },
+    {
+      "method": "fixed_32",
+      "round": 0,
+      "seconds": 45.6539,
+      "accuracy": 0.9021,
+      "pattern_passes": 32.0,
+      "peak_mb": 857.0654
+    },
+    {
+      "method": "repeated_8x16",
+      "round": 0,
+      "seconds": 191.075,
+      "accuracy": 0.9074,
+      "pattern_passes": 128.0,
+      "peak_mb": 496.3774
+    },
+    {
+      "method": "repeated_4x16",
+      "round": 0,
+      "seconds": 95.4259,
+      "accuracy": 0.9054,
+      "pattern_passes": 64.0,
+      "peak_mb": 496.3774
+    },
+    {
+      "method": "fixed_16",
+      "round": 0,
+      "seconds": 23.8771,
+      "accuracy": 0.895,
+      "pattern_passes": 16.0,
+      "peak_mb": 496.3677
+    },
+    {
+      "method": "fixed_64",
+      "round": 0,
+      "seconds": 92.3519,
+      "accuracy": 0.9057,
+      "pattern_passes": 64.0,
+      "peak_mb": 1579.7373
+    },
+    {
+      "method": "nested_four_stage",
+      "round": 0,
+      "seconds": 81.0989,
+      "accuracy": 0.9068,
+      "pattern_passes": 53.4289,
+      "peak_mb": 811.8984
+    },
+    {
+      "method": "repeated_4x16",
+      "round": 1,
+      "seconds": 95.4901,
+      "accuracy": 0.9052,
+      "pattern_passes": 64.0,
+      "peak_mb": 496.3774
+    },
+    {
+      "method": "fixed_16",
+      "round": 1,
+      "seconds": 24.0072,
+      "accuracy": 0.895,
+      "pattern_passes": 16.0,
+      "peak_mb": 496.3677
+    },
+    {
+      "method": "fresh_two_stage",
+      "round": 1,
+      "seconds": 76.8744,
+      "accuracy": 0.9073,
+      "pattern_passes": 52.2392,
+      "peak_mb": 1240.9854
+    },
+    {
+      "method": "fresh_four_stage",
+      "round": 1,
+      "seconds": 81.2741,
+      "accuracy": 0.9074,
+      "pattern_passes": 53.9494,
+      "peak_mb": 811.8984
+    },
+    {
+      "method": "nested_four_stage",
+      "round": 1,
+      "seconds": 80.7385,
+      "accuracy": 0.9067,
+      "pattern_passes": 53.3815,
+      "peak_mb": 811.8984
+    },
+    {
+      "method": "fixed_128",
+      "round": 1,
+      "seconds": 186.9546,
+      "accuracy": 0.9074,
+      "pattern_passes": 128.0,
+      "peak_mb": 3025.7192
+    },
+    {
+      "method": "repeated_8x16",
+      "round": 1,
+      "seconds": 191.2227,
+      "accuracy": 0.9077,
+      "pattern_passes": 128.0,
+      "peak_mb": 496.3774
+    },
+    {
+      "method": "fixed_64",
+      "round": 1,
+      "seconds": 91.9896,
+      "accuracy": 0.9057,
+      "pattern_passes": 64.0,
+      "peak_mb": 1579.7373
+    },
+    {
+      "method": "fixed_32",
+      "round": 1,
+      "seconds": 45.8261,
+      "accuracy": 0.9025,
+      "pattern_passes": 32.0,
+      "peak_mb": 857.0654
+    },
+    {
+      "method": "fixed_32",
+      "round": 2,
+      "seconds": 45.9305,
+      "accuracy": 0.9026,
+      "pattern_passes": 32.0,
+      "peak_mb": 857.0654
+    },
+    {
+      "method": "fresh_four_stage",
+      "round": 2,
+      "seconds": 81.4563,
+      "accuracy": 0.9071,
+      "pattern_passes": 54.0457,
+      "peak_mb": 800.6069
+    },
+    {
+      "method": "nested_four_stage",
+      "round": 2,
+      "seconds": 80.5853,
+      "accuracy": 0.9068,
+      "pattern_passes": 53.3182,
+      "peak_mb": 778.0239
+    },
+    {
+      "method": "fixed_128",
+      "round": 2,
+      "seconds": 187.1281,
+      "accuracy": 0.9073,
+      "pattern_passes": 128.0,
+      "peak_mb": 3025.7192
+    },
+    {
+      "method": "fixed_16",
+      "round": 2,
+      "seconds": 23.9599,
+      "accuracy": 0.8948,
+      "pattern_passes": 16.0,
+      "peak_mb": 496.3677
+    },
+    {
+      "method": "repeated_8x16",
+      "round": 2,
+      "seconds": 191.3047,
+      "accuracy": 0.9069,
+      "pattern_passes": 128.0,
+      "peak_mb": 496.3774
+    },
+    {
+      "method": "repeated_4x16",
+      "round": 2,
+      "seconds": 95.3585,
+      "accuracy": 0.9058,
+      "pattern_passes": 64.0,
+      "peak_mb": 496.3774
+    },
+    {
+      "method": "fresh_two_stage",
+      "round": 2,
+      "seconds": 76.7506,
+      "accuracy": 0.9071,
+      "pattern_passes": 52.1834,
+      "peak_mb": 1240.9854
+    },
+    {
+      "method": "fixed_64",
+      "round": 2,
+      "seconds": 92.3846,
+      "accuracy": 0.906,
+      "pattern_passes": 64.0,
+      "peak_mb": 1579.7373
+    }
+  ]
+}

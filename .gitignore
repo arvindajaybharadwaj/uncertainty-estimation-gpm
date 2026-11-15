@@ -1,0 +1,16 @@
+# Downloaded datasets, cached random walks and trained checkpoints
+GPM/data/*
+!GPM/data/README.md
+GPM/patterns/*
+!GPM/patterns/README.md
+GPM/model/
+
+# Large prediction and decision files from cross-dataset runs, smoke tests,
+# and the handoff package (shared directly, not through git)
+cross_dataset_validation/runs/**/*.npz
+cross_dataset_validation/runs_smoke/
+cross_dataset_validation/handoff/
+final_failure_and_result_analysis/Checkpoints
+
+__pycache__/
+"final_failure_and_result_analysis/Checkpoints/" 
