@@ -1,6 +1,8 @@
-# Final accuracy-efficiency results
+# Accuracy-efficiency results
 
-**All three live adaptive rules stayed within 0.5 points of fixed K = 128 while using about 47 patterns' worth of forward passes per node instead of 128. They also beat fixed budgets and random allocation at the same pattern cost. In three matched timing rounds on a T4, they ran 2.3 to 2.4 times faster than fixed K = 128.**
+**Summary:** Adaptive inference worked well on Computers, partly on WikiCS, and not on CoraFull. On Computers it matched fixed K = 128 accuracy and ran 2.3 to 2.45 times faster. On WikiCS it was 2.2 times faster but slightly less accurate. On CoraFull it missed the 0.5-point target on two of three checkpoints and was no better than fixed K = 64. It beat random allocation everywhere.
+
+The first sections below cover the Computers runs in detail. CoraFull is in "CoraFull".
 
 ## Setup
 
@@ -119,6 +121,49 @@ The repetition count differs between runs: 50 for Computers 1 and 10 for the oth
 ### Comparing across runs
 
 - **Environments:** Computers 1 ran on an L40S, and the other checkpoints on an RTX 5060 laptop GPU with torch 2.7.1. Comparisons within each checkpoint are fair, but absolute accuracies are not comparable across environments.
+
+## CoraFull
+
+Ahana ran CoraFull with three checkpoints, using the same setup as WikiCS: nested four-stage, threshold frozen on validation nodes at a target of 48, 10 repetitions, on an RTX 5060 laptop GPU. Her files are on the `cross-dataset-validation` branch under `cross_dataset_validation/runs/cora_full/`. CoraFull has 70 classes and 3,959 test nodes.
+
+| Checkpoint | Accuracy | Pattern-passes | Vs fixed K = 128 | Vs fixed at same cost | Vs random at same cost |
+|---|---:|---:|---|---|---|
+| 1 | 70.77% | 46.1 | -0.45 (-0.67 to -0.24) | +0.02 (-0.20 to +0.23) | +0.64 (+0.38 to +0.88) |
+| 2 | 70.52% | 46.1 | -0.76 (-1.02 to -0.52) | -0.22 (-0.46 to +0.02) | +0.33 (+0.06 to +0.59) |
+| 3 | 70.50% | 47.3 | -0.68 (-0.93 to -0.45) | -0.17 (-0.40 to +0.08) | +0.51 (+0.26 to +0.78) |
+
+Timing for checkpoint 1, three rounds:
+
+| Method | Accuracy | ms per node | Speedup vs fixed K = 128 (range) | Peak GPU MB |
+|---|---:|---:|---:|---:|
+| Fixed K = 32 | 70.49% | 0.988 | 3.83 (3.65 to 3.96) | 1,367 |
+| Nested four-stage | 70.67% | 1.911 | 1.98 (1.87 to 2.03) | 1,980 |
+| Fixed K = 64 | 70.93% | 1.952 | 1.95 (1.93 to 1.98) | 1,980 |
+| Repeated, 4 passes at K = 16 | 70.93% | 2.173 | 1.74 (1.60 to 1.79) | 1,060 |
+| Fixed K = 128 | 71.20% | 3.794 | 1.00 | 3,206 |
+
+- Only checkpoint 1 stayed within 0.5 points of fixed K = 128.
+- Adaptive inference gained nothing over fixed K at the same cost.
+- Fixed K = 64 was as fast as adaptive inference and 0.26 points more accurate.
+- Random allocation was still worse than adaptive inference.
+
+## Why the benefit shrinks across datasets
+
+These numbers come from Ahana's validation diagnostics, which use the same method for all three datasets (`cross_dataset_validation/results/uncertainty/`). They replace the Computers and WikiCS figures in "Why WikiCS gains less" above, which used a different split of the repetitions.
+
+| | Computers | WikiCS | CoraFull |
+|---|---:|---:|---:|
+| Classes | 10 | 10 | 70 |
+| AUROC: low confidence finds nodes that improve | 0.85 | 0.82 | 0.76 |
+| Nodes wrong at both K = 16 and K = 128 in every run | 5.4 to 6.0% | 10.1 to 10.9% | 19.6 to 20.7% |
+
+As the task gets harder, confidence is a weaker signal of which nodes more patterns will fix, and more nodes stay wrong whatever the budget. Adaptive inference spends patterns on those nodes for nothing. This matches the results, but it is not proven to be the only cause.
+
+Sampling disagreement found improvable nodes slightly better than confidence on every dataset (AUROC 0.87, 0.84 and 0.79), but it costs an extra forward pass.
+
+## Batch size
+
+Ahana also timed Computers checkpoint 1 with batches of 32 nodes instead of 256 (`cross_dataset_validation/results/batch_size_timing/computers_ckpt1.json`). The adaptive speedup fell from 2.45 to 2.09 times. Smaller batches use the GPU less efficiently, and adaptive inference runs many small batches for the nodes that need more patterns.
 
 ## Unresolved issue
 
