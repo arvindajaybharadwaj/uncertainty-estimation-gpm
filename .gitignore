@@ -10,5 +10,7 @@ GPM/model/
 cross_dataset_validation/runs/**/*.npz
 cross_dataset_validation/runs_smoke/
 cross_dataset_validation/handoff/
+final_failure_and_result_analysis/Checkpoints
 
 __pycache__/
+
