@@ -1,0 +1,24 @@
+{
+  "predictions": "cross_dataset_validation\\runs\\cora_full\\ckpt2\\final_predictions.npz",
+  "split": "val",
+  "nodes": 3959,
+  "runs": 10,
+  "accuracy_by_k": {
+    "16": 69.52008082849204,
+    "32": 70.32331396817378,
+    "64": 70.656731497853,
+    "128": 70.88658752210154
+  },
+  "accuracy_change_pp": 1.3665066936094927,
+  "prediction_changed_pct": 7.850467289719626,
+  "corrected_pct_of_k16_errors": 11.386425789342836,
+  "broken_pct_of_k16_correct": 3.026559604694256,
+  "nodes_benefit_pct": 13.867138166203588,
+  "nodes_unchanged_pct": 78.65622631977772,
+  "nodes_harmed_pct": 7.476635514018691,
+  "nodes_wrong_in_every_run_pct": 20.661783278605707,
+  "confidence_auroc": 0.755118593991606,
+  "confidence_spearman": 0.06842890359828038,
+  "confidence_top20_benefit_pp": 2.070164348925411,
+  "all_nodes_benefit_pp": 1.3545087143217984
+}

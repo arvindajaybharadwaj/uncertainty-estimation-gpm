@@ -1,0 +1,63 @@
+{
+  "mode": "FINAL",
+  "score": "confidence",
+  "n_calibration": 1769,
+  "n_evaluation": 5847,
+  "nested": true,
+  "success": {
+    "threshold": 0.6605149389508373,
+    "accuracy": 0.8028219599794767,
+    "fixed_128_accuracy": 0.8073541987343937,
+    "diff": -0.004532238754917051,
+    "ci_low": -0.006089020010261671,
+    "ci_high": -0.0030100906447750975,
+    "rerun_cost": 32.65291602531212,
+    "reuse_cost": 24.32645801265606,
+    "fixed_128_cost": 128.0,
+    "stop_share": {
+      "16": 0.8770993671968531,
+      "32": 0.04445014537369591,
+      "64": 0.018299982897212245,
+      "128": 0.060150504532238754
+    }
+  },
+  "cost_unit": "pattern-passes",
+  "seed": 20261105,
+  "bootstrap": 2000,
+  "predictions": "/tmp/claude-0/-home-claude/3b3e7d86-55ca-550b-a491-2ab28fccfb0b/scratchpad/ahana/wikics_ckpt3/final_predictions.npz",
+  "live_adaptive": {
+    "nested_four_stage": {
+      "accuracy": 0.8052334530528477,
+      "mean_final_k": 32.57273815631948,
+      "rerun_cost": 49.14547631263896,
+      "reuse_cost": null,
+      "sampled_patterns": 32.57273815631948,
+      "threshold": 0.7939695850350803,
+      "seconds_total": 33.9185566,
+      "seconds_per_node": 0.0005801018744655379,
+      "stop_share": {
+        "16": 0.7964255173593295,
+        "32": 0.04982042072857876,
+        "64": 0.022575679835813236,
+        "128": 0.13117838207627844
+      },
+      "comparisons": {
+        "fixed_128": {
+          "diff": -0.002120745681546092,
+          "ci_low": -0.0036257910039336405,
+          "ci_high": -0.0006665811527278963
+        },
+        "fixed_32_64_interpolated": {
+          "diff": 0.001793069489413486,
+          "ci_low": 0.000296829031413291,
+          "ci_high": 0.0033445952719025895
+        },
+        "random_same_cost": {
+          "diff": 0.007885623455281866,
+          "ci_low": 0.005870305896619929,
+          "ci_high": 0.009896928594801839
+        }
+      }
+    }
+  }
+}

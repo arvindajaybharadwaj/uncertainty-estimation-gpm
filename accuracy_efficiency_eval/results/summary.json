@@ -1,0 +1,34 @@
+{
+  "mode": "PILOT",
+  "score": "confidence",
+  "n_calibration": 1375,
+  "n_evaluation": 1376,
+  "nested": false,
+  "success": {
+    "threshold": 0.6010752279955641,
+    "accuracy": 0.9076453488372094,
+    "fixed_128_accuracy": 0.9115406976744186,
+    "diff": -0.003895348837209303,
+    "ci_low": -0.0053204941860465135,
+    "ci_high": -0.0025726744186046523,
+    "rerun_cost": 23.053488372093025,
+    "reuse_cost": 19.52674418604651,
+    "fixed_128_cost": 128.0,
+    "stop_share": {
+      "16": 0.9357994186046512,
+      "32": 0.032601744186046513,
+      "64": 0.008343023255813953,
+      "128": 0.023255813953488372
+    }
+  },
+  "cost_unit": "pattern-passes",
+  "seed": 20261105,
+  "bootstrap": 2000,
+  "predictions": "/mnt/user-data/uploads/ada proj/uncertainty-estimation-gpm/sampling_benefit_diagnostic/results/predictions.npz",
+  "split_sensitivity": {
+    "gap_mean": -0.00012427325581398362,
+    "gap_min": -0.00030523255813963424,
+    "gap_max": 0.00014534883720918046,
+    "rerun_cost_mean": 63.15011627906978
+  }
+}

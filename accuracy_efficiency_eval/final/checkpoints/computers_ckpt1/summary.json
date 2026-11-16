@@ -1,0 +1,63 @@
+{
+  "mode": "FINAL",
+  "score": "confidence",
+  "n_calibration": 2750,
+  "n_evaluation": 2751,
+  "nested": true,
+  "success": {
+    "threshold": 0.5970919445941323,
+    "accuracy": 0.9108469647400944,
+    "fixed_128_accuracy": 0.9168229734641947,
+    "diff": -0.005976008724100329,
+    "ci_low": -0.007401308615049074,
+    "ci_high": -0.004609233006179572,
+    "rerun_cost": 23.055819701926573,
+    "reuse_cost": 19.527909850963287,
+    "fixed_128_cost": 128.0,
+    "stop_share": {
+      "16": 0.9422391857506361,
+      "32": 0.025176299527444566,
+      "64": 0.008193384223918574,
+      "128": 0.024391130498000728
+    }
+  },
+  "cost_unit": "pattern-passes",
+  "seed": 20261105,
+  "bootstrap": 2000,
+  "predictions": "/tmp/claude-0/-home-claude/3b3e7d86-55ca-550b-a491-2ab28fccfb0b/scratchpad/handoff/nested/final_predictions.npz",
+  "live_adaptive": {
+    "nested_four_stage": {
+      "accuracy": 0.9165394402035624,
+      "mean_final_k": 31.446659396583062,
+      "rerun_cost": 46.893318793166124,
+      "reuse_cost": null,
+      "sampled_patterns": 31.446659396583062,
+      "threshold": 0.8347810986346769,
+      "seconds_total": 12.317233479999999,
+      "seconds_per_node": 8.954731719374772e-05,
+      "stop_share": {
+        "16": 0.8234605597964376,
+        "32": 0.0352453653217012,
+        "64": 0.014721919302071973,
+        "128": 0.12657215557978918
+      },
+      "comparisons": {
+        "fixed_128": {
+          "diff": -0.00028353326063249766,
+          "ci_low": -0.0009598327880770633,
+          "ci_high": 0.0003707742639040345
+        },
+        "fixed_32_64_interpolated": {
+          "diff": 0.0032170502091635566,
+          "ci_low": 0.0022128933677466483,
+          "ci_high": 0.004305327560078283
+        },
+        "random_same_cost": {
+          "diff": 0.008898196241932702,
+          "ci_low": 0.007381561092363953,
+          "ci_high": 0.01063644267602125
+        }
+      }
+    }
+  }
+}
