@@ -19,7 +19,7 @@ def parse_runs(items):
 
 
 def combine(runs):
-    curves, successes, units = [], [], set()
+    curves, successes, lives, units = [], [], [], set()
     for dataset, checkpoint, folder in runs:
         with open(folder / 'summary.json') as f:
             summary = json.load(f)
@@ -31,6 +31,13 @@ def combine(runs):
         curve['point'] = curve.apply(
             lambda r: f'target {int(r.target)}' if r.method in ('adaptive', 'random') else r.setting, axis=1)
         curves.append(curve)
+        for rule, live in (summary.get('live_adaptive') or {}).items():
+            row = dict(dataset=dataset, checkpoint=checkpoint, rule=rule,
+                       **{k: v for k, v in live.items() if k not in ('comparisons', 'stop_share')})
+            for name, c in live.get('comparisons', {}).items():
+                base = 'fixed_mix' if name.endswith('_interpolated') else name
+                row.update({f'{base}_{k}': v for k, v in c.items()})
+            lives.append(row)
         if summary.get('success'):
             successes.append(dict(dataset=dataset, checkpoint=checkpoint, **{
                 k: v for k, v in summary['success'].items() if k != 'stop_share'}))
@@ -41,7 +48,7 @@ def combine(runs):
                   accuracy_mean=('accuracy', 'mean'), accuracy_sd=('accuracy', 'std')
                   )
              .reset_index())
-    return table, pd.DataFrame(successes)
+    return table, pd.DataFrame(successes), pd.DataFrame(lives)
 
 
 def main():
@@ -51,10 +58,11 @@ def main():
     args = a.parse_args()
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
-    curve, success = combine(parse_runs(args.runs))
+    curve, success, live = combine(parse_runs(args.runs))
     curve.to_csv(out / 'combined_curve.csv', index=False)
     success.to_csv(out / 'combined_success.csv', index=False)
-    print(curve.to_string(index=False))
+    live.to_csv(out / 'combined_live.csv', index=False)
+    print(live.to_string(index=False))
 
 
 if __name__ == '__main__':

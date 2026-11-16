@@ -41,7 +41,7 @@ Run `evaluate.py` once for each dataset and checkpoint, then combine the output 
 python aggregate_runs.py --output combined computers:1=results_c1 computers:2=results_c2 computers:3=results_c3 wikics:1=results_w1 wikics:2=results_w2 wikics:3=results_w3
 ```
 
-This writes `combined/combined_curve.csv` and `combined/combined_success.csv`. Results are matched by method and fixed setting or cost target, because adaptive thresholds differ between checkpoints.
+This writes `combined_curve.csv`, `combined_success.csv`, and `combined_live.csv`. Draw the per-checkpoint chart with `python plot_checkpoints.py --live combined/combined_live.csv --output combined/gains_by_checkpoint.png`. Results are matched by method and fixed setting or cost target, because adaptive thresholds differ between checkpoints.
 
 ## Files the adaptive script must produce
 
