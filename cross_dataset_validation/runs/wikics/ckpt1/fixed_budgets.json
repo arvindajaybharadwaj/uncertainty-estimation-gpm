@@ -1,0 +1,64 @@
+{
+  "dataset": "wikics",
+  "checkpoint_id": 1,
+  "batch_size": 256,
+  "repetitions": 10,
+  "seconds": 63.7927604,
+  "reproduction_check": {
+    "max_abs_difference": 0.0,
+    "same_prediction_pct": 100.0
+  },
+  "test_nodes": 5847,
+  "threshold": 0.7837404181485188,
+  "accuracy": {
+    "fixed_32": 79.9025141097999,
+    "fixed_48": 80.19497178040021,
+    "fixed_64": 80.41901829998291,
+    "fixed_128": 80.61227980160766,
+    "adaptive_live": 80.3471865914144,
+    "adaptive_replay": 80.43099025141098,
+    "mix_32_64_at_48": 80.1607662048914,
+    "mix_32_64_at_adaptive_cost": 80.1915161807085
+  },
+  "cost": {
+    "fixed_32": 32.0,
+    "fixed_48": 48.0,
+    "adaptive_live": 49.90511373353856,
+    "adaptive_replay": 49.98665982555156
+  },
+  "comparisons": {
+    "adaptive_vs_fixed_48": {
+      "diff": 0.15221481101419532,
+      "ci_low": -0.02565418163160591,
+      "ci_high": 0.3403882332820248
+    },
+    "adaptive_vs_fixed_32": {
+      "diff": 0.4446724816145032,
+      "ci_low": 0.23597571404138873,
+      "ci_high": 0.6499486916367366
+    },
+    "adaptive_vs_fixed_128": {
+      "diff": -0.26509321019326143,
+      "ci_low": -0.4122199418505216,
+      "ci_high": -0.10774756285274494
+    },
+    "replay_vs_fixed_48": {
+      "diff": 0.23601847101077478,
+      "ci_low": 0.090602018128955,
+      "ci_high": 0.3882332820249701
+    },
+    "fixed_48_vs_mix_at_48": {
+      "diff": 0.03420557550880801,
+      "ci_low": -0.0667008722421754,
+      "ci_high": 0.13598854113220452
+    },
+    "adaptive_vs_mix_at_adaptive_cost": {
+      "diff": 0.155670410705883,
+      "ci_low": -0.011867442191948453,
+      "ci_high": 0.3212605670116736
+    }
+  },
+  "torch": "2.7.1+cu128",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "git_commit": "22d12c4"
+}

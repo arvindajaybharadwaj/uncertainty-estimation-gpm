@@ -6,9 +6,12 @@ GPM/patterns/*
 GPM/model/
 
 # Large prediction and decision files from cross-dataset runs, smoke tests,
-# and the handoff package (shared directly, not through git)
 cross_dataset_validation/runs/**/*.npz
 cross_dataset_validation/runs_smoke/
 cross_dataset_validation/handoff/
+
+# Preliminary Computers checkpoint and sampling cache
+epoch_380.pt
+computers_sampling_full.npz
 
 __pycache__/
