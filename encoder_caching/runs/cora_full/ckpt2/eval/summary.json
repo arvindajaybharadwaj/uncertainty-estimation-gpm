@@ -1,0 +1,63 @@
+{
+  "mode": "FINAL",
+  "score": "confidence",
+  "n_calibration": 3959,
+  "n_evaluation": 3959,
+  "nested": true,
+  "success": {
+    "threshold": 0.4403117895126343,
+    "accuracy": 0.7071482697650922,
+    "fixed_128_accuracy": 0.712654710785552,
+    "diff": -0.005506441020459711,
+    "ci_low": -0.007451376610255115,
+    "ci_high": -0.0035861328618337993,
+    "rerun_cost": 52.03980803233139,
+    "reuse_cost": 34.0199040161657,
+    "fixed_128_cost": 128.0,
+    "stop_share": {
+      "16": 0.7887345289214448,
+      "32": 0.046021722657236676,
+      "64": 0.01912099014902753,
+      "128": 0.146122758272291
+    }
+  },
+  "cost_unit": "pattern-passes",
+  "seed": 20261105,
+  "bootstrap": 2000,
+  "predictions": "C:\\College\\Year_3\\Projects\\ADA Project\\uncertainty-estimation-gpm\\encoder_caching\\runs\\cora_full\\ckpt2\\predictions.npz",
+  "live_adaptive": {
+    "cached_four_stage": {
+      "accuracy": 0.7038646122758272,
+      "mean_final_k": 31.17393281131599,
+      "rerun_cost": 46.34786562263198,
+      "reuse_cost": 31.17393281131599,
+      "sampled_patterns": 31.17393281131599,
+      "threshold": 0.411526760511231,
+      "seconds_total": 44.8252423,
+      "seconds_per_node": 0.0011322364814347057,
+      "stop_share": {
+        "16": 0.8188431422076282,
+        "32": 0.04049002273301339,
+        "64": 0.01919676686031826,
+        "128": 0.12147006819904016
+      },
+      "comparisons": {
+        "fixed_128": {
+          "diff": -0.008790098509724677,
+          "ci_low": -0.01118969436726446,
+          "ci_high": -0.006415761555948471
+        },
+        "fixed_32_64_interpolated": {
+          "diff": -0.004021799346305439,
+          "ci_low": -0.006301539137487868,
+          "ci_high": -0.0017031562974900408
+        },
+        "random_same_cost": {
+          "diff": 0.001945655996735641,
+          "ci_low": -0.0005844518317955124,
+          "ci_high": 0.00453583163666896
+        }
+      }
+    }
+  }
+}

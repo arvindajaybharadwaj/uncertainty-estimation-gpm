@@ -14,4 +14,9 @@ cross_dataset_validation/handoff/
 epoch_380.pt
 computers_sampling_full.npz
 
+# Encoder caching: large prediction files, smoke runs, pytest cache
+encoder_caching/runs/**/*.npz
+encoder_caching/runs_smoke/
+.pytest_cache/
+
 __pycache__/

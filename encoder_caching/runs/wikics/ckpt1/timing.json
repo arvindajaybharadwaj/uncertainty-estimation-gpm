@@ -1,0 +1,361 @@
+{
+  "dataset": "wikics",
+  "checkpoint_id": 1,
+  "threshold": {
+    "original": 0.7837404181485188,
+    "cached": 0.7800497269271908
+  },
+  "rounds": 3,
+  "repeats": 10,
+  "batch_size": 32,
+  "nodes": 5847,
+  "torch": "2.7.1+cu128",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "git_commit": "7321464",
+  "summary": [
+    {
+      "method": "cached_four_stage",
+      "rounds": 3,
+      "median_seconds": 46.667431299999976,
+      "min_seconds": 45.71090389999995,
+      "max_seconds": 47.241596599999994,
+      "ms_per_node": 0.798143172567128,
+      "speedup_vs_fixed_128": 1.4843725821266716,
+      "speedup_min": 1.4664920427350674,
+      "speedup_max": 1.5177245444932004,
+      "accuracy": 0.8044239210991392,
+      "pattern_passes": 49.64314463257511,
+      "peak_gpu_mb": 168.9091796875
+    },
+    {
+      "method": "nested_four_stage",
+      "rounds": 3,
+      "median_seconds": 52.32978179999998,
+      "min_seconds": 51.62928189999991,
+      "max_seconds": 52.525222299999996,
+      "ms_per_node": 0.8949851513596713,
+      "speedup_vs_fixed_128": 1.3257567376288948,
+      "speedup_min": 1.3189744367821554,
+      "speedup_max": 1.3417164242991366,
+      "accuracy": 0.8042813978678525,
+      "pattern_passes": 49.81973661706858,
+      "peak_gpu_mb": 229.98193359375
+    },
+    {
+      "method": "fixed_64",
+      "rounds": 3,
+      "median_seconds": 36.40684609999994,
+      "min_seconds": 36.3534241,
+      "max_seconds": 36.55657259999998,
+      "ms_per_node": 0.6226585616555488,
+      "speedup_vs_fixed_128": 1.9055910695873213,
+      "speedup_min": 1.894922050214304,
+      "speedup_max": 1.9057193982450749,
+      "accuracy": 0.8039792486175247,
+      "pattern_passes": 64.0,
+      "peak_gpu_mb": 286.4404296875
+    },
+    {
+      "method": "fixed_32",
+      "rounds": 3,
+      "median_seconds": 20.835181799999987,
+      "min_seconds": 20.817429600000082,
+      "max_seconds": 20.978869800000012,
+      "ms_per_node": 0.3563396921498202,
+      "speedup_vs_fixed_128": 3.3247540705404384,
+      "speedup_min": 3.302343079511364,
+      "speedup_max": 3.3326189704035123,
+      "accuracy": 0.7997149535374266,
+      "pattern_passes": 32.0,
+      "peak_gpu_mb": 196.1064453125
+    },
+    {
+      "method": "repeated_4x16",
+      "rounds": 3,
+      "median_seconds": 53.9509018,
+      "min_seconds": 53.619263400000136,
+      "max_seconds": 54.97111189999998,
+      "ms_per_node": 0.922710822644091,
+      "speedup_vs_fixed_128": 1.2839795663990183,
+      "speedup_min": 1.2602878694909576,
+      "speedup_max": 1.2938738132683805,
+      "accuracy": 0.8034604640556411,
+      "pattern_passes": 64.0,
+      "peak_gpu_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_128",
+      "rounds": 3,
+      "median_seconds": 69.2794255,
+      "min_seconds": 69.27185550000002,
+      "max_seconds": 69.37656079999988,
+      "ms_per_node": 1.184871310073542,
+      "speedup_vs_fixed_128": 1.0,
+      "speedup_min": 1.0,
+      "speedup_max": 1.0,
+      "accuracy": 0.8064021435493985,
+      "pattern_passes": 128.0,
+      "peak_gpu_mb": 467.7958984375
+    },
+    {
+      "method": "fixed_16",
+      "rounds": 3,
+      "median_seconds": 13.855416699999978,
+      "min_seconds": 13.693470899999966,
+      "max_seconds": 13.856393599999933,
+      "ms_per_node": 0.23696625106892386,
+      "speedup_vs_fixed_128": 5.0071796685840555,
+      "speedup_min": 4.999270192498021,
+      "speedup_max": 5.059303518146022,
+      "accuracy": 0.7895330938943048,
+      "pattern_passes": 16.0,
+      "peak_gpu_mb": 150.939453125
+    },
+    {
+      "method": "fixed_48",
+      "rounds": 3,
+      "median_seconds": 28.68039729999998,
+      "min_seconds": 28.596086000000014,
+      "max_seconds": 28.692356099999984,
+      "ms_per_node": 0.4905147477338803,
+      "speedup_vs_fixed_128": 2.415567147669884,
+      "speedup_min": 2.414296520598392,
+      "speedup_max": 2.4260858916146724,
+      "accuracy": 0.8023829884271136,
+      "pattern_passes": 48.0,
+      "peak_gpu_mb": 241.2734375
+    },
+    {
+      "method": "repeated_8x16",
+      "rounds": 3,
+      "median_seconds": 108.1529921,
+      "min_seconds": 107.91867480000002,
+      "max_seconds": 108.44372729999998,
+      "ms_per_node": 1.8497176688900292,
+      "speedup_vs_fixed_128": 0.6404987430763833,
+      "speedup_min": 0.6397471068849908,
+      "speedup_max": 0.6419595647221568,
+      "accuracy": 0.8062083119548487,
+      "pattern_passes": 128.0,
+      "peak_gpu_mb": 150.94091796875
+    }
+  ],
+  "runs": [
+    {
+      "method": "cached_four_stage",
+      "round": 0,
+      "seconds": 47.241596599999994,
+      "accuracy": 0.805336069779374,
+      "pattern_passes": 49.91332307166068,
+      "peak_mb": 168.9091796875
+    },
+    {
+      "method": "nested_four_stage",
+      "round": 0,
+      "seconds": 52.525222299999996,
+      "accuracy": 0.8050453223875492,
+      "pattern_passes": 50.082435436976226,
+      "peak_mb": 229.98193359375
+    },
+    {
+      "method": "fixed_64",
+      "round": 0,
+      "seconds": 36.3534241,
+      "accuracy": 0.803813921669232,
+      "pattern_passes": 64.0,
+      "peak_mb": 286.4404296875
+    },
+    {
+      "method": "fixed_32",
+      "round": 0,
+      "seconds": 20.978869800000012,
+      "accuracy": 0.7992987857020695,
+      "pattern_passes": 32.0,
+      "peak_mb": 196.1064453125
+    },
+    {
+      "method": "repeated_4x16",
+      "round": 0,
+      "seconds": 54.97111189999998,
+      "accuracy": 0.8029929878570207,
+      "pattern_passes": 64.0,
+      "peak_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_128",
+      "round": 0,
+      "seconds": 69.2794255,
+      "accuracy": 0.806054386865059,
+      "pattern_passes": 128.0,
+      "peak_mb": 467.7958984375
+    },
+    {
+      "method": "fixed_16",
+      "round": 0,
+      "seconds": 13.693470899999966,
+      "accuracy": 0.7886779545065846,
+      "pattern_passes": 16.0,
+      "peak_mb": 150.939453125
+    },
+    {
+      "method": "fixed_48",
+      "round": 0,
+      "seconds": 28.68039729999998,
+      "accuracy": 0.8019326150162477,
+      "pattern_passes": 48.0,
+      "peak_mb": 241.2734375
+    },
+    {
+      "method": "repeated_8x16",
+      "round": 0,
+      "seconds": 107.91867480000002,
+      "accuracy": 0.8062596203181118,
+      "pattern_passes": 128.0,
+      "peak_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_128",
+      "round": 1,
+      "seconds": 69.27185550000002,
+      "accuracy": 0.8057465366854797,
+      "pattern_passes": 128.0,
+      "peak_mb": 467.7958984375
+    },
+    {
+      "method": "fixed_16",
+      "round": 1,
+      "seconds": 13.856393599999933,
+      "accuracy": 0.7898751496493929,
+      "pattern_passes": 16.0,
+      "peak_mb": 150.939453125
+    },
+    {
+      "method": "cached_four_stage",
+      "round": 1,
+      "seconds": 46.667431299999976,
+      "accuracy": 0.8040704634855481,
+      "pattern_passes": 49.653360697793744,
+      "peak_mb": 163.4794921875
+    },
+    {
+      "method": "nested_four_stage",
+      "round": 1,
+      "seconds": 51.62928189999991,
+      "accuracy": 0.8040533606977938,
+      "pattern_passes": 49.70425859415084,
+      "peak_mb": 218.6904296875
+    },
+    {
+      "method": "repeated_8x16",
+      "round": 1,
+      "seconds": 108.1529921,
+      "accuracy": 0.8056781255344622,
+      "pattern_passes": 128.0,
+      "peak_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_64",
+      "round": 1,
+      "seconds": 36.55657259999998,
+      "accuracy": 0.8036086882161793,
+      "pattern_passes": 64.0,
+      "peak_mb": 286.4404296875
+    },
+    {
+      "method": "repeated_4x16",
+      "round": 1,
+      "seconds": 53.9509018,
+      "accuracy": 0.8037455105182145,
+      "pattern_passes": 64.0,
+      "peak_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_48",
+      "round": 1,
+      "seconds": 28.692356099999984,
+      "accuracy": 0.8018128955019668,
+      "pattern_passes": 48.0,
+      "peak_mb": 241.2734375
+    },
+    {
+      "method": "fixed_32",
+      "round": 1,
+      "seconds": 20.835181799999987,
+      "accuracy": 0.7987001881306653,
+      "pattern_passes": 32.0,
+      "peak_mb": 196.1064453125
+    },
+    {
+      "method": "fixed_32",
+      "round": 2,
+      "seconds": 20.817429600000082,
+      "accuracy": 0.801145886779545,
+      "pattern_passes": 32.0,
+      "peak_mb": 196.1064453125
+    },
+    {
+      "method": "nested_four_stage",
+      "round": 2,
+      "seconds": 52.32978179999998,
+      "accuracy": 0.8037455105182145,
+      "pattern_passes": 49.67251582007867,
+      "peak_mb": 229.98193359375
+    },
+    {
+      "method": "repeated_8x16",
+      "round": 2,
+      "seconds": 108.44372729999998,
+      "accuracy": 0.806687190011972,
+      "pattern_passes": 128.0,
+      "peak_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_64",
+      "round": 2,
+      "seconds": 36.40684609999994,
+      "accuracy": 0.8045151359671626,
+      "pattern_passes": 64.0,
+      "peak_mb": 286.4404296875
+    },
+    {
+      "method": "fixed_16",
+      "round": 2,
+      "seconds": 13.855416699999978,
+      "accuracy": 0.7900461775269368,
+      "pattern_passes": 16.0,
+      "peak_mb": 150.939453125
+    },
+    {
+      "method": "repeated_4x16",
+      "round": 2,
+      "seconds": 53.619263400000136,
+      "accuracy": 0.8036428937916881,
+      "pattern_passes": 64.0,
+      "peak_mb": 150.94091796875
+    },
+    {
+      "method": "fixed_128",
+      "round": 2,
+      "seconds": 69.37656079999988,
+      "accuracy": 0.8074055070976569,
+      "pattern_passes": 128.0,
+      "peak_mb": 467.7958984375
+    },
+    {
+      "method": "cached_four_stage",
+      "round": 2,
+      "seconds": 45.71090389999995,
+      "accuracy": 0.8038652300324953,
+      "pattern_passes": 49.36275012827091,
+      "peak_mb": 168.9091796875
+    },
+    {
+      "method": "fixed_48",
+      "round": 2,
+      "seconds": 28.596086000000014,
+      "accuracy": 0.8034034547631264,
+      "pattern_passes": 48.0,
+      "peak_mb": 241.2734375
+    }
+  ]
+}
